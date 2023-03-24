@@ -1,8 +1,8 @@
 import { galleryItems } from "./gallery-items.js";
-// Change code below this line
-console.log(galleryItems);
+// // Change code below this line
+// console.log(galleryItems);
 
-// отримати посилання на список
+// // отримати посилання на список
 const galleryList = document.querySelector(".gallery");
 
 //callback. створити розмітку і повернути динамічний рядок
@@ -24,39 +24,46 @@ function createGallery(items) {
   }, "");
 }
 
-// перебрати galleryItems з допомогою callback ф-ції
+// // перебрати galleryItems з допомогою callback ф-ції
 const galleryMarkup = createGallery(galleryItems);
 
-//додати розмітку в html
+// //додати розмітку в html
 galleryList.insertAdjacentHTML("beforeend", galleryMarkup);
 
-// призначити слухача подій на galleryList
+// // призначити слухача подій на galleryList
 galleryList.addEventListener("click", onGalleryItemClick);
 
-// заборонити оновлення сторінки
+//callback (відкриття по кліку )
 function onGalleryItemClick(event) {
+  // заборонити оновлення сторінки
   event.preventDefault();
-
-  // перевірка відсутності кліку по зображенню.
-  if (event.target.nodeName !== "IMG") {
-    return;
-  }
   //  отримати data-source зображення;
   const imgSrc = event.target.dataset.source;
-
-	// показати модальне вікно
-  const instance = basicLightbox.create(`
-    <img src="${imgSrc}"/>
-  `);
-  instance.show();
+  // перевірка присутності кліку по зображенню.
+  if (imgSrc) {
+    instance.element().querySelector("img").src = imgSrc;
+    instance.show();
+    // повішати на window прослуховування клавіатури
+    window.addEventListener("keydown", сlosingWindowByEscape);
+  }
 }
 
-document.addEventListener("keydown", onDocumentKeyDown);
+// callback для подій слухача кнопки "escape"
+const instance = basicLightbox.create(`<img>`, {
+  // додати "keydown" до вікна
+  onShow: () => {
+    window.addEventListener("keydown", сlosingWindowByEscape);
+  },
+  // видалити "keydown" з вікна
+  onClose: () => {
+    window.removeEventListener("keydown", сlosingWindowByEscape);
+  },
+});
 
-function onDocumentKeyDown(event) {
-  const instance = basicLightbox.instance();
-
-  if (event.code === "Escape" && instance.visible()) {
+// callback (задкриття по кнопці "Escape" )
+function сlosingWindowByEscape(event) {
+  if (event.code === "Escape") {
     instance.close();
   }
+  return;
 }
