@@ -2,6 +2,8 @@ import { galleryItems } from "./gallery-items.js";
 // // Change code below this line
 // console.log(galleryItems);
 
+// // отримати посилання на список
+const galleryList = document.querySelector(".gallery");
 
 //callback. створити розмітку і повернути динамічний рядок
 function createGallery(items) {
