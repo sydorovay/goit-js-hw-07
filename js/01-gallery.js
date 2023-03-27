@@ -43,8 +43,6 @@ function onGalleryItemClick(event) {
   if (imgSrc) {
     instance.element().querySelector("img").src = imgSrc;
     instance.show();
-    // повішати на window прослуховування клавіатури
-    window.addEventListener("keydown", сlosingWindowByEscape);
   }
 }
 
